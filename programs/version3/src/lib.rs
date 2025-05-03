@@ -64,6 +64,70 @@ pub mod version3 {
         Ok(())
     }
 
+    pub fn delete_entry(
+        ctx: Context<DeleteEntry>,
+        _masterhash: Pubkey,
+        _entry_index: u64,
+    ) -> Result<()> {
+        let vault = &mut ctx.accounts.vault;
+        vault.entry_count -= 1;
+        Ok(())
+    }
+
+    pub fn delete_cid(
+        ctx: Context<DeleteCid>,
+        _masterhash: Pubkey,
+        _c_entry_index: u64,
+    ) -> Result<()> {
+        let vault = &mut ctx.accounts.vault;
+        vault.cid_count -= 1;
+        Ok(())
+    }
+
+}
+
+#[derive(Accounts)]
+#[instruction(masterhash: Pubkey, c_entry_index: u64)]
+pub struct DeleteCid<'info> {
+    #[account(
+        mut,
+        seeds = [b"vault", masterhash.as_ref()],
+        bump,
+    )]
+    pub vault: Account<'info, Vault>,
+    #[account(
+        mut,
+        seeds = [b"pic", vault.key().as_ref(),&c_entry_index.to_le_bytes()],
+        bump,
+        close = user,
+    )]
+    pub cid_entry: Account<'info, CidEntry>,
+
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(masterhash: Pubkey, entry_index: u64)]
+pub struct DeleteEntry<'info> {
+    #[account(
+        mut,
+        seeds = [b"vault", masterhash.as_ref()],
+        bump,
+    )]
+    pub vault: Account<'info, Vault>,
+    #[account(
+        mut,
+        seeds = [b"entry", vault.key().as_ref(),&entry_index.to_le_bytes()],
+        bump,
+        close = user,
+    )]
+    pub vault_entry: Account<'info, VaultEntry>,
+
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
