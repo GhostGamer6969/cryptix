@@ -47,8 +47,47 @@ pub mod version3 {
         Ok(())
     }
 
+    pub fn update_entry(
+        ctx: Context<UpdateEntry>,
+        _masterhash: Pubkey,
+        _entry_index: u64,
+        webiste: String,
+        uname: String,
+        pass: String,
+    ) -> Result<()> {
+        let entry = &mut ctx.accounts.vault_entry;
+
+        entry.website = webiste;
+        entry.uname = uname;
+        entry.pass = pass;
+
+        Ok(())
+    }
+
 }
 
+#[derive(Accounts)]
+#[instruction(masterhash: Pubkey, entry_index: u64)]
+pub struct UpdateEntry<'info> {
+    #[account(
+        seeds = [b"vault", masterhash.as_ref()],
+        bump,
+    )]
+    pub vault: Account<'info, Vault>,
+    #[account(
+        mut,
+        seeds = [b"entry", vault.key().as_ref(),&entry_index.to_le_bytes()],
+        bump,
+        realloc = VaultEntry::INIT_SPACE,
+        realloc::payer = user,
+        realloc::zero = false,
+    )]
+    pub vault_entry: Account<'info, VaultEntry>,
+
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
 
 #[derive(Accounts)]
 #[instruction(masterhash: Pubkey, entry_index: u64)]
