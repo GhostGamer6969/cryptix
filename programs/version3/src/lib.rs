@@ -1,11 +1,16 @@
 use anchor_lang::prelude::*;
 
-
-declare_id!("FLyBksegh9gkLK1MGojo9VL3VeBWbEwsDJpY9oHWAc45");
+declare_id!("6qrkjKfD3zALj1ANfKdmz1wP8688xZvsC5R8R5H2bz56");
 
 #[program]
 pub mod version3 {
     use super::*;
+
+    pub fn initialize_vault(ctx: Context<InitializeVault>, masterhash: Pubkey) -> Result<()> {
+        let vault = &mut ctx.accounts.vault;
+        vault.masterhash = masterhash;
+        Ok(())
+    }
 
     pub fn add_vault_entry(
         ctx: Context<AddVaultEntry>,
@@ -84,6 +89,22 @@ pub mod version3 {
         Ok(())
     }
 
+}
+
+#[derive(Accounts)]
+#[instruction(masterhash:Pubkey)]
+pub struct InitializeVault<'info> {
+    #[account(
+        init_if_needed,
+        payer= user,
+        space = 8 + Vault::INIT_SPACE,
+        seeds = [b"vault", masterhash.as_ref()],
+        bump,
+    )]
+    pub vault: Account<'info, Vault>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
