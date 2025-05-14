@@ -23,7 +23,7 @@ export async function getSetup(masterHash: string) {
     // Fetch vault info only if it exists, else don't try to fetch it
     const vaultInfo = await connection.getAccountInfo(vaultPDA);
     if (!vaultInfo) {
-        console.log("Vault does not exist. You will need to initialize it.");
+        // console.log("Vault does not exist. You will need to initialize it.");
         return { program, vaultPDA, vaultExists: false };
     }
 

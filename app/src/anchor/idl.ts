@@ -188,6 +188,10 @@ export type Version3 = {
         {
           "name": "pass",
           "type": "string"
+        },
+        {
+          "name": "time",
+          "type": "u64"
         }
       ]
     },

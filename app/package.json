@@ -19,11 +19,14 @@
     "@tailwindcss/vite": "^4.1.5",
     "bs58": "^6.0.0",
     "buffer": "^6.0.3",
+    "crypto-js": "^4.2.0",
+    "lucide-react": "^0.510.0",
     "pinata": "^2.2.2",
     "react": "^19.1.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.6.0",
-    "tailwindcss": "^4.1.5"
+    "tailwindcss": "^4.1.5",
+    "vite-plugin-obfuscator": "^1.0.5"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",

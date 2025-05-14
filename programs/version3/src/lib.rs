@@ -19,6 +19,7 @@ pub mod version3 {
         webiste: String,
         uname: String,
         pass: String,
+        time:u64,
     ) -> Result<()> {
         let entry = &mut ctx.accounts.vault_entry;
         let vault = &mut ctx.accounts.vault;
@@ -26,7 +27,7 @@ pub mod version3 {
         entry.website = webiste;
         entry.uname = uname;
         entry.pass = pass;
-        entry.time_stored = Clock::get()?.unix_timestamp as u64;
+        entry.time_stored = time;
 
         vault.masterhash = masterhash;
         vault.entry_count += 1;

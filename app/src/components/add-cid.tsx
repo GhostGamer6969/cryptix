@@ -3,12 +3,14 @@ import { useState, useRef } from 'react';
 import * as anchor from '@coral-xyz/anchor';
 import { PublicKey } from "@solana/web3.js";
 import { getSetup } from "../anchor/setup";
+import CidState from "./cid-state";
 
 export default function AddCid({ masterHash }: { masterHash: string }) {
   const { publicKey, sendTransaction } = useWallet();
   const { connection } = useConnection();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadToPinata = async (file: File): Promise<string> => {
@@ -43,12 +45,11 @@ export default function AddCid({ masterHash }: { masterHash: string }) {
     try {
       const file = fileInputRef.current.files[0];
       const cid = await uploadToPinata(file);
-      console.log("Uploaded CID:", cid);
 
       const { program, vaultPDA, cidPDA } = await getSetup(masterHash);
       const vault = await program.account.vault.fetch(vaultPDA);
       const maxIndex = vault.cidCount.toNumber();
-      console.log("Adding CID to index", maxIndex);
+
       const transaction = await program.methods
         .addCidEntry(new PublicKey(masterHash), new anchor.BN(maxIndex), String(cid))
         .accounts({
@@ -58,8 +59,7 @@ export default function AddCid({ masterHash }: { masterHash: string }) {
         })
         .transaction();
 
-      const sig = await sendTransaction(transaction, connection);
-      console.log(`Explorer: https://solana.fm/tx/${sig}?cluster=devnet-alpha`);
+      await sendTransaction(transaction, connection);
     } catch (error) {
       console.error(error);
     } finally {
@@ -67,12 +67,40 @@ export default function AddCid({ masterHash }: { masterHash: string }) {
     }
   };
 
+  const onFileChange = () => {
+    const file = fileInputRef.current?.files?.[0];
+    if (file) {
+      setFileName(file.name);
+    } else {
+      setFileName(null);
+    }
+  };
+
   return (
-    <div>
-      <input type="file" accept="image/*" ref={fileInputRef} />
-      <button className="w-24" onClick={onClick} disabled={!publicKey || isLoading}>
-        {isLoading ? "Uploading..." : "Add CID"}
+    <div className="flex items-center gap-4 bg-gray-100 px-4 py-2 rounded-md w-fit">
+      <label
+        htmlFor="file-upload"
+        className="text-sm text-gray-700 cursor-pointer"
+      >
+        {fileName ? fileName : "Upload The Image"}
+      </label>
+      <input
+        id="file-upload"
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        onChange={onFileChange}
+        className="hidden"
+      />
+
+      <button
+        className="bg-black text-white text-sm px-4 py-1 rounded disabled:opacity-50"
+        onClick={onClick}
+        disabled={!publicKey || isLoading}
+      >
+        {isLoading ? "Uploading..." : "Upload"}
       </button>
+
     </div>
   );
 }

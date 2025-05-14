@@ -182,6 +182,10 @@
         {
           "name": "pass",
           "type": "string"
+        },
+        {
+          "name": "time",
+          "type": "u64"
         }
       ]
     },

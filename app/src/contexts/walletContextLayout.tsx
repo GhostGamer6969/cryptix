@@ -9,10 +9,11 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
 import "@solana/wallet-adapter-react-ui/styles.css";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 
 
 const WalletContextLayout = ({ children }: { children: ReactNode }) => {
-    const network = WalletAdapterNetwork.Devnet;
+    const network = WalletAdapterNetwork.Devnet;new PhantomWalletAdapter()
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
     const wallets = useMemo(() => [], [network]);
 
