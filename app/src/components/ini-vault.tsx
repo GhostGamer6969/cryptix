@@ -15,10 +15,10 @@ export async function initializeVault(masterhash: string, connection: any, publi
             vault: vaultPDA,
             user: publicKey,
         }).transaction();
-        // await sendTransaction(transaction, connection,);
-        const signature = await sendTransaction(transaction, connection,);
+        await sendTransaction(transaction, connection,);
+        // const signature = await sendTransaction(transaction, connection,);
         // console.log(`Vault initialized. Explorer: https://solana.fm/tx/${signature}?cluster=devnet-alpha`);
-        
+
 
     } catch (err) {
         console.error("Vault initialization failed:", err);
