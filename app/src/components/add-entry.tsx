@@ -4,6 +4,7 @@ import { getSetup } from "../anchor/setup";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 import { encryptPassword } from "../utils/encryption";
+import { Eye } from "lucide-react";
 
 export default function AddEntry({ masterHash }: { masterHash: string }) {
     const { publicKey, sendTransaction } = useWallet();
@@ -57,32 +58,6 @@ export default function AddEntry({ masterHash }: { masterHash: string }) {
     }
 
     return (
-        // <div>
-        //     <input
-        //         type="text"
-        //         id="website"
-        //         placeholder="website"
-        //         value={website}
-        //         onChange={(e) => setWebsite(e.target.value)}
-        //     />
-        //     <input
-        //         type="text"
-        //         id="uname"
-        //         placeholder="username"
-        //         value={uname}
-        //         onChange={(e) => setUname(e.target.value)}
-        //     />
-        //     <input
-        //         type="password"
-        //         id="pass"
-        //         placeholder="password"
-        //         value={pass}
-        //         onChange={(e) => setPass(e.target.value)}
-        //     />
-        //     <button onClick={onClick} disabled={isLoading}>
-        //         {isLoading ? "Uploading..." : "Upload"}
-        //     </button>
-        // </div>
         <div className="max-w-sm mx-auto mt-10 p-6 bg-white rounded-xl shadow-md space-y-4">
             <h2 className="text-lg font-semibold text-gray-900">Login Details</h2>
 
@@ -128,13 +103,13 @@ export default function AddEntry({ masterHash }: { masterHash: string }) {
                         className="w-full px-3 py-2 pr-10 bg-gray-50 text-gray-700 rounded-md border border-gray-200 focus:outline-none"
                     />
                     <span className="absolute inset-y-0 right-3 flex items-center text-gray-400">
-                        👁️
+                        <Eye className="w-4 h-4" />
                     </span>
                 </div>
             </div>
 
             <div className="flex justify-between items-center pt-2">
-                <button className="text-gray-500 hover:underline" disabled={isLoading}>
+                <button className="text-gray-500 hover:underline" onClick={() => window.history.back()} disabled={isLoading}>
                     Cancel
                 </button>
                 <button
