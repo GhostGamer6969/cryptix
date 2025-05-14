@@ -15,8 +15,8 @@ export async function initializeVault(masterhash: string, connection: any, publi
             .initializeVault(masterPubkey)
             .accounts({
                 user: publicKey,
-            }).rpc();
-        // .transaction();
+            })
+            .transaction();
 
         await sendTransaction(transaction, connection,);
         // const signature = await sendTransaction(transaction, connection,);
