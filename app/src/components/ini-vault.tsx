@@ -9,10 +9,10 @@ export async function initializeVault(masterhash: string, connection: any, publi
         // console.log("Vault already exists, skipping initialization.");
         return;
     }
-
+    const masterPubkey = new PublicKey(masterhash);
     try {
         const transaction = await program.methods
-            .initializeVault(new PublicKey(masterhash))
+            .initializeVault(masterPubkey)
             .accounts({
                 user: publicKey,
                 // vault: vaultPDA,
