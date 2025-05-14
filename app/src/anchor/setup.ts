@@ -1,4 +1,3 @@
-// setup.ts
 import { IdlAccounts, Program } from "@coral-xyz/anchor";
 import { Version3 } from "./idl";
 import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
@@ -20,18 +19,19 @@ export async function getSetup(masterHash: string) {
         program.programId,
     );
 
-    // Fetch vault info only if it exists, else don't try to fetch it
+    // Fetch vault info to check if it exists
     const vaultInfo = await connection.getAccountInfo(vaultPDA);
     if (!vaultInfo) {
-        // console.log("Vault does not exist. You will need to initialize it.");
+        // Vault does not exist, return vaultExists as false
         return { program, vaultPDA, vaultExists: false };
     }
 
-    // If vault exists, fetch the data
+    // If the vault exists, fetch additional data
     const vault = await program.account.vault.fetch(vaultPDA);
     const entryIndex = vault.entryCount.toNumber();
     const cidIndex = vault.cidCount.toNumber();
 
+    // Create the entryPDA based on the vault's entry index
     const entryIndexBuffer = Buffer.alloc(8);
     entryIndexBuffer.writeBigUInt64LE(BigInt(entryIndex));
 
@@ -44,13 +44,14 @@ export async function getSetup(masterHash: string) {
         program.programId,
     );
 
+    // Create the cidPDA based on the vault's cid index
     const cidIndexBuffer = Buffer.alloc(8);
     cidIndexBuffer.writeBigUInt64LE(BigInt(cidIndex));
 
     const [cidPDA] = PublicKey.findProgramAddressSync(
         [
             Buffer.from("pic"),
-            new PublicKey(vaultPDA).toBuffer(),
+            vaultPDA.toBuffer(),
             cidIndexBuffer,
         ],
         program.programId
@@ -64,7 +65,6 @@ export async function getSetup(masterHash: string) {
         vaultExists: true,
     };
 }
-
 
 export type vaultData = IdlAccounts<Version3>["vault"];
 export type entryData = IdlAccounts<Version3>["vaultEntry"];

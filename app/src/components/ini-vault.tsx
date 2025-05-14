@@ -1,5 +1,5 @@
 import { getSetup } from "../anchor/setup";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, SystemProgram } from "@solana/web3.js";
 
 export async function initializeVault(masterhash: string, connection: any, publicKey: PublicKey, sendTransaction: any) {
     const { program, vaultPDA } = await getSetup(masterhash);
@@ -15,8 +15,8 @@ export async function initializeVault(masterhash: string, connection: any, publi
             .initializeVault(masterPubkey)
             .accounts({
                 user: publicKey,
-                // vault: vaultPDA,
-                // systemProgram: SystemProgram.programId,
+                vault: vaultPDA,
+                systemProgram: SystemProgram.programId,
             })
             .transaction();
 
