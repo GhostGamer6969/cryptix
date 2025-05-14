@@ -20,6 +20,7 @@
     "bs58": "^6.0.0",
     "buffer": "^6.0.3",
     "crypto-js": "^4.2.0",
+    "http-server": "^14.1.1",
     "lucide-react": "^0.510.0",
     "pinata": "^2.2.2",
     "react": "^19.1.0",
