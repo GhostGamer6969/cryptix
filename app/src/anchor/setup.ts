@@ -65,6 +65,7 @@ export async function getSetup(masterHash: string) {
     };
 }
 
+
 export type vaultData = IdlAccounts<Version3>["vault"];
 export type entryData = IdlAccounts<Version3>["vaultEntry"];
 export type CidData = IdlAccounts<Version3>["cidEntry"];

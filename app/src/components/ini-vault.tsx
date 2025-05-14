@@ -1,5 +1,5 @@
 import { getSetup } from "../anchor/setup";
-import { PublicKey, SystemProgram } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 
 export async function initializeVault(masterhash: string, connection: any, publicKey: PublicKey, sendTransaction: any) {
     const { program, vaultPDA } = await getSetup(masterhash);
@@ -15,12 +15,13 @@ export async function initializeVault(masterhash: string, connection: any, publi
             .initializeVault(new PublicKey(masterhash))
             .accounts({
                 user: publicKey,
-                vault: vaultPDA,
-                systemProgram: SystemProgram.programId,
+                // vault: vaultPDA,
+                // systemProgram: SystemProgram.programId,
             })
             .transaction();
 
-        const signature = await sendTransaction(transaction, connection,);
+        await sendTransaction(transaction, connection,);
+        // const signature = await sendTransaction(transaction, connection,);
         // console.log(`Vault initialized. Explorer: https://solana.fm/tx/${signature}?cluster=devnet-alpha`);
 
     } catch (err) {

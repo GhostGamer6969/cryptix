@@ -24,7 +24,7 @@ export default function AddEntry({ masterHash }: { masterHash: string }) {
         // console.log(time);
 
         try {
-            const { program, vaultPDA, entryPDA } = await getSetup(masterHash);
+            const { program, vaultPDA } = await getSetup(masterHash);
 
             const vault = await program.account.vault.fetch(vaultPDA);
             const maxIndex = vault.entryCount.toNumber();
@@ -41,13 +41,13 @@ export default function AddEntry({ masterHash }: { masterHash: string }) {
                 )
                 .accounts({
                     user: publicKey,
-                    vault: vaultPDA,
-                    entry: entryPDA,
+                    // vault: vaultPDA,
+                    // entry: entryPDA,
                 })
                 .transaction()
 
-
-            const sig = await sendTransaction(transaction, connection);
+            await sendTransaction(transaction, connection);
+            // const sig = await sendTransaction(transaction, connection);
             // console.log(`Explorer: https://solana.fm/tx/${sig}?cluster=devnet-alpha`);
         } catch (error) {
             console.error(error);

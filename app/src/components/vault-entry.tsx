@@ -7,6 +7,11 @@ import { getSetup } from "../anchor/setup";
 import { Eye } from "lucide-react";
 
 import { decryptPassword } from "../utils/encryption";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { Version3 } from "../anchor/idl";
+
+
+type EntryData = IdlAccounts<Version3>["vaultEntry"];
 
 export default function VaultEntry({ masterHash }: { masterHash: string }) {
     const { connection } = useConnection();

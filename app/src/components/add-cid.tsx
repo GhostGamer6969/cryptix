@@ -3,7 +3,6 @@ import { useState, useRef } from 'react';
 import * as anchor from '@coral-xyz/anchor';
 import { PublicKey } from "@solana/web3.js";
 import { getSetup } from "../anchor/setup";
-import CidState from "./cid-state";
 
 export default function AddCid({ masterHash }: { masterHash: string }) {
   const { publicKey, sendTransaction } = useWallet();
@@ -46,16 +45,16 @@ export default function AddCid({ masterHash }: { masterHash: string }) {
       const file = fileInputRef.current.files[0];
       const cid = await uploadToPinata(file);
 
-      const { program, vaultPDA, cidPDA } = await getSetup(masterHash);
+      const { program, vaultPDA } = await getSetup(masterHash);
       const vault = await program.account.vault.fetch(vaultPDA);
       const maxIndex = vault.cidCount.toNumber();
 
       const transaction = await program.methods
         .addCidEntry(new PublicKey(masterHash), new anchor.BN(maxIndex), String(cid))
         .accounts({
+          // vault: vaultPDA,
           user: publicKey,
-          vault: vaultPDA,
-          cidEntry: cidPDA,
+          // cidEntry: cidPDA,
         })
         .transaction();
 

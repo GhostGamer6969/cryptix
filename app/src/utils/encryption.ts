@@ -1,5 +1,4 @@
 import * as CryptoJS from 'crypto-js';
-import { createHash } from 'crypto';
 
 export function encryptPassword(masterhash: string, pass: string, time: number): string {
     const keyInput = masterhash + time.toString();
