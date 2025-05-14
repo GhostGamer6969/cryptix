@@ -6,7 +6,7 @@ export async function initializeVault(masterhash: string, connection: any, publi
 
     const vaultInfo = await connection.getAccountInfo(vaultPDA);
     if (vaultInfo) {
-        console.log("Vault already exists, skipping initialization.");
+        // console.log("Vault already exists, skipping initialization.");
         return;
     }
     const masterPubkey = new PublicKey(masterhash);
@@ -16,6 +16,7 @@ export async function initializeVault(masterhash: string, connection: any, publi
             user: publicKey,
         }).transaction();
         await sendTransaction(transaction, connection,);
+        alert("Vault initialized successfully!");
         // const signature = await sendTransaction(transaction, connection,);
         // console.log(`Vault initialized. Explorer: https://solana.fm/tx/${signature}?cluster=devnet-alpha`);
 

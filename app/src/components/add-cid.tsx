@@ -60,7 +60,6 @@ export default function AddCid({ masterHash }: { masterHash: string }) {
 
       await sendTransaction(transaction, connection);
       alert("Image uploaded successfully!");
-      window.location.reload();
     } catch (error) {
       console.error(error);
     } finally {

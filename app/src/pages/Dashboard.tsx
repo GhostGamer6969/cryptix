@@ -30,7 +30,7 @@ function Dashboard() {
 
         try {
             await initializeVault(hashBase58, connection, publicKey, sendTransaction);
-            alert("Vault initialized successfully!");
+           
             await new Promise((resolve) => setTimeout(resolve, 1000));
             navigate("/vault");
         } catch (err) {

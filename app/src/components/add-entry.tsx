@@ -48,6 +48,7 @@ export default function AddEntry({ masterHash }: { masterHash: string }) {
                 .transaction()
 
             await sendTransaction(transaction, connection);
+            alert("Entry added successfully!");
             // const sig = await sendTransaction(transaction, connection);
             // console.log(`Explorer: https://solana.fm/tx/${sig}?cluster=devnet-alpha`);
         } catch (error) {
