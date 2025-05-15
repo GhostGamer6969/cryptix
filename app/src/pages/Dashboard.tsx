@@ -30,7 +30,7 @@ function Dashboard() {
 
         try {
             await initializeVault(hashBase58, connection, publicKey, sendTransaction);
-           
+
             await new Promise((resolve) => setTimeout(resolve, 1000));
             navigate("/vault");
         } catch (err) {
@@ -48,7 +48,7 @@ function Dashboard() {
             </div>
 
             <div className="flex flex-col items-center justify-center h-screen">
-                <h1 className="text-6xl font-bold font-sans  m-4">Criptex</h1>
+                <h1 className="text-6xl font-bold font-sans  m-4">Cryptix</h1>
                 <input placeholder="Enter master password" className="p-2 text-black bg-gray-100 rounded-xl w-96 text-center mb-4 " id="masterPass" /> <br />
                 <button
                     className="bg-black text-white font-sans rounded-2xl h-10 w-20 mt-4"
